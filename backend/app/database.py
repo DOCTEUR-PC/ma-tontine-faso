@@ -7,6 +7,10 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./tontine.db")
 
+# Render fournit une URL "postgres://" que SQLAlchemy 2.0 n'accepte plus.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 connect_args = {}
 if DATABASE_URL.startswith("sqlite"):
     connect_args = {"check_same_thread": False}

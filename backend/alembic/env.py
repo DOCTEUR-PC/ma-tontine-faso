@@ -9,15 +9,12 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 load_dotenv()
 
-from app.database import Base
+from app.database import Base, DATABASE_URL
 from app import models  # noqa: F401 — registers all models
 
 config = context.config
 
-config.set_main_option(
-    "sqlalchemy.url",
-    os.getenv("DATABASE_URL", "sqlite:///./tontine.db")
-)
+config.set_main_option("sqlalchemy.url", DATABASE_URL)
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
