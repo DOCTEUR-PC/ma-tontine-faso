@@ -21,6 +21,8 @@ def sync_push(payload: schemas.SyncPayload, db: Session = Depends(get_db)):
             nom=g_data.nom,
             montant=g_data.montant,
             frequence=g_data.frequence,
+            penalite=g_data.penalite,
+            commission=g_data.commission,
             collecteur_id=g_data.collecteur_id,
             client_id=client_id,
         )
@@ -65,6 +67,15 @@ def sync_push(payload: schemas.SyncPayload, db: Session = Depends(get_db)):
             client_id=p_data.client_id,
         )
         db.add(p)
+
+    for a_data in payload.audit_log:
+        db.add(models.AuditLog(
+            date=a_data.date or datetime.now(timezone.utc),
+            action=a_data.action,
+            details=a_data.details,
+            collecteur_id=a_data.collecteur_id,
+            client_id=a_data.client_id,
+        ))
 
     db.commit()
 

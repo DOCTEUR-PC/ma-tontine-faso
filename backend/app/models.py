@@ -23,6 +23,8 @@ class Groupe(Base):
     nom = Column(String(100), nullable=False)
     montant = Column(Float, nullable=False)
     frequence = Column(String(20), nullable=False)
+    penalite = Column(Float, nullable=False, default=0)
+    commission = Column(Float, nullable=False, default=0)
     date_creation = Column(DateTime, default=lambda: datetime.now(timezone.utc))
     collecteur_id = Column(Integer, ForeignKey("collecteurs.id"))
     client_id = Column(Integer)
@@ -60,3 +62,14 @@ class Paiement(Base):
 
     membre = relationship("Membre", back_populates="paiements")
     groupe = relationship("Groupe", back_populates="paiements")
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_log"
+
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    action = Column(String(40), nullable=False)
+    details = Column(String(255), default="")
+    collecteur_id = Column(Integer, ForeignKey("collecteurs.id"))
+    client_id = Column(Integer)

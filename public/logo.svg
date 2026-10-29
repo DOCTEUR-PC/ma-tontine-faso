@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="56" fill="#059669"/>
+  <circle cx="60" cy="60" r="56" stroke="#047857" stroke-width="2"/>
+  <!-- cercle de membres (tontine = groupe) -->
+  <g>
+    <circle cx="60" cy="26" r="9" fill="#FBBF24"/>
+    <circle cx="89" cy="43" r="9" fill="#FFFFFF"/>
+    <circle cx="89" cy="77" r="9" fill="#FBBF24"/>
+    <circle cx="60" cy="94" r="9" fill="#FFFFFF"/>
+    <circle cx="31" cy="77" r="9" fill="#FBBF24"/>
+    <circle cx="31" cy="43" r="9" fill="#FFFFFF"/>
+  </g>
+  <!-- pièce centrale -->
+  <circle cx="60" cy="60" r="20" fill="#EF4444"/>
+  <circle cx="60" cy="60" r="20" stroke="#FBBF24" stroke-width="2.5"/>
+  <text x="60" y="68" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="22" fill="#FFFFFF">F</text>
+</svg>

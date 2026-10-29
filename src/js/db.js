@@ -9,3 +9,7 @@ db.version(1).stores({
   tours: '++id, groupe_id, membre_id, numero',
   collecteurs: '++id, telephone, pin'
 })
+
+db.version(2).stores({
+  audit_log: '++id, date, action, collecteur_id, sync'
+})

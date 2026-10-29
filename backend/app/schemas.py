@@ -6,6 +6,8 @@ class GroupeBase(BaseModel):
     nom: str
     montant: float
     frequence: str
+    penalite: float = 0
+    commission: float = 0
 
 
 class GroupeCreate(GroupeBase):
@@ -76,10 +78,19 @@ class LoginRequest(BaseModel):
     pin: str
 
 
+class AuditLogCreate(BaseModel):
+    date: datetime | None = None
+    action: str
+    details: str = ""
+    collecteur_id: int | None = None
+    client_id: int | None = None
+
+
 class SyncPayload(BaseModel):
     groupes: list[GroupeCreate] = []
     membres: list[MembreCreate] = []
     paiements: list[PaiementCreate] = []
+    audit_log: list[AuditLogCreate] = []
 
 
 class SyncResponse(BaseModel):

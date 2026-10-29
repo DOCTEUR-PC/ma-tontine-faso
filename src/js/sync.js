@@ -17,7 +17,8 @@ export async function syncPush() {
   if (!online) return { success: false, reason: 'offline' }
 
   const unsyncedPaiements = await db.paiements.where('sync').equals(0).toArray()
-  if (unsyncedPaiements.length === 0) return { success: true, reason: 'nothing_to_sync' }
+  const unsyncedLogs = await db.audit_log.where('sync').equals(0).toArray()
+  if (unsyncedPaiements.length === 0 && unsyncedLogs.length === 0) return { success: true, reason: 'nothing_to_sync' }
 
   const collecteur = getCollecteur()
   const groupes = await db.groupes.where('collecteur_id').equals(collecteur.id).toArray()
@@ -48,6 +49,13 @@ export async function syncPush() {
       statut: p.statut,
       client_id: p.id,
     })),
+    audit_log: unsyncedLogs.map(a => ({
+      date: a.date,
+      action: a.action,
+      details: a.details || '',
+      collecteur_id: a.collecteur_id,
+      client_id: a.id,
+    })),
   }
 
   try {
@@ -62,6 +70,7 @@ export async function syncPush() {
     const data = await res.json()
 
     await db.paiements.where('sync').equals(0).modify({ sync: 1 })
+    await db.audit_log.where('sync').equals(0).modify({ sync: 1 })
 
     return { success: true, data }
   } catch {

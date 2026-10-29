@@ -31,12 +31,19 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,png,svg,ico,woff2}'],
+        // Libs d'export lourdes : hors précache, mises en cache à la 1re utilisation
+        globIgnores: ['**/jspdf*.js', '**/xlsx-*.js', '**/html2canvas-*.js', '**/index.es-*.js', '**/purify*.js'],
         navigateFallback: 'index.html',
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
             handler: 'CacheFirst',
             options: { cacheName: 'google-fonts-cache', expiration: { maxEntries: 10, maxAgeSeconds: 365 * 24 * 60 * 60 } }
+          },
+          {
+            urlPattern: /\/assets\/(jspdf|xlsx|html2canvas|index\.es|purify).*\.js$/i,
+            handler: 'CacheFirst',
+            options: { cacheName: 'export-libs-cache', expiration: { maxEntries: 10, maxAgeSeconds: 30 * 24 * 60 * 60 } }
           },
           {
             urlPattern: /\/api\//i,

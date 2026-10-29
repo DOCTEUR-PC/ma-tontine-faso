@@ -1,40 +1,474 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* === Design tokens === */
+:root {
+  --green-50: #ECFDF5;
+  --green-100: #D1FAE5;
+  --green-500: #10B981;
+  --green-600: #059669;
+  --green-700: #047857;
+  --yellow-400: #FBBF24;
+  --yellow-500: #F59E0B;
+  --yellow-50: #FFFBEB;
+  --red-400: #F87171;
+  --red-500: #EF4444;
+  --red-50: #FEF2F2;
+  --orange-500: #F97316;
+
+  --bg-primary: #F8FAFC;
+  --bg-card: #FFFFFF;
+  --bg-header: #059669;
+  --bg-nav: #FFFFFF;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --border-color: #E2E8F0;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -4px rgba(0,0,0,0.05);
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+  --nav-height: 72px;
+  --header-height: 60px;
+}
+
+:root[data-theme="dark"] {
+  --bg-primary: #0F172A;
+  --bg-card: #1E293B;
+  --bg-header: #047857;
+  --bg-nav: #1E293B;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --border-color: #334155;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4);
+  --green-50: #064E3B;
+  --green-100: #065F46;
+  --yellow-50: #78350F;
+  --red-50: #7F1D1D;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-primary: #0F172A;
+    --bg-card: #1E293B;
+    --bg-header: #047857;
+    --bg-nav: #1E293B;
+    --text-primary: #F1F5F9;
+    --text-secondary: #94A3B8;
+    --text-muted: #64748B;
+    --border-color: #334155;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.3);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.4);
+    --green-50: #064E3B;
+    --green-100: #065F46;
+    --yellow-50: #78350F;
+    --red-50: #7F1D1D;
+  }
+}
 
 @theme {
-  --color-green-600: #16a34a;
-  --color-green-500: #22c55e;
-  --color-green-50: #f0fdf4;
+  --color-green-600: #059669;
+  --color-green-500: #10B981;
+  --color-green-50: #ECFDF5;
 }
 
-html { -webkit-tap-highlight-color: transparent; }
+/* === Base === */
+* { -webkit-tap-highlight-color: transparent; }
 
-.nav-btn.active { color: #16a34a; }
-.nav-btn.active svg { stroke: #16a34a; }
+/* Les classes composant non-layered battent l'utilitaire Tailwind .hidden : on force */
+.hidden { display: none !important; }
 
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === Header === */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  height: var(--header-height);
+  background: var(--bg-header);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.app-header h1 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.header-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.15s;
+}
+.header-btn:active { background: rgba(255,255,255,0.25); }
+
+/* === Main content === */
+.app-main {
+  flex: 1;
+  padding: 16px;
+  padding-bottom: calc(var(--nav-height) + 24px);
+  max-width: 480px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* === Bottom navigation === */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: var(--nav-height);
+  background: var(--bg-nav);
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all 0.2s ease;
+  position: relative;
+  letter-spacing: 0.02em;
+}
+.nav-btn svg {
+  width: 22px;
+  height: 22px;
+  stroke: var(--text-muted);
+  transition: all 0.2s ease;
+}
+.nav-btn.active {
+  color: var(--green-600);
+}
+.nav-btn.active svg {
+  stroke: var(--green-600);
+}
+.nav-btn.active::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 3px;
+  background: var(--green-600);
+  border-radius: 0 0 3px 3px;
+}
+
+/* === Cards === */
 .card {
-  @apply bg-white rounded-xl shadow-sm border border-gray-100 p-4;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+.card-interactive {
+  cursor: pointer;
+}
+.card-interactive:active {
+  transform: scale(0.98);
+  box-shadow: var(--shadow-md);
 }
 
+/* === Stat cards === */
+.stat-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.stat-label {
+  font-size: 0.6875rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* === Buttons === */
 .btn-primary {
-  @apply w-full bg-green-600 text-white py-3 rounded-xl font-semibold text-base active:bg-green-700 transition-colors;
+  width: 100%;
+  background: var(--green-600);
+  color: white;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 4px rgba(5, 150, 105, 0.3);
+}
+.btn-primary:active {
+  background: var(--green-700);
+  transform: scale(0.98);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .btn-secondary {
-  @apply w-full border-2 border-green-600 text-green-600 py-3 rounded-xl font-semibold text-base active:bg-green-50 transition-colors;
+  width: 100%;
+  border: 2px solid var(--green-600);
+  color: var(--green-600);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  transition: all 0.15s ease;
+  background: transparent;
+}
+.btn-secondary:active {
+  background: var(--green-50);
+  transform: scale(0.98);
 }
 
+.btn-sm {
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+.btn-sm:active { transform: scale(0.96); }
+
+.btn-green { background: var(--green-600); color: white; }
+.btn-orange { background: var(--orange-500); color: white; }
+.btn-danger { color: var(--red-500); font-size: 0.875rem; font-weight: 500; }
+
+/* === Form inputs === */
 .input-field {
-  @apply w-full border border-gray-300 rounded-lg px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent;
+  width: 100%;
+  border: 1.5px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input-field:focus {
+  outline: none;
+  border-color: var(--green-500);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+}
+.input-field::placeholder { color: var(--text-muted); }
+
+.form-label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
 }
 
-.badge-paid {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800;
+/* === Badges === */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.badge-paid { background: var(--green-50); color: #059669; }
+.badge-pending { background: var(--yellow-50); color: #D97706; }
+.badge-late { background: var(--red-50); color: #DC2626; }
+
+/* === Sync indicator === */
+.sync-badge {
+  font-size: 0.625rem;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.sync-online { background: rgba(255,255,255,0.2); color: white; }
+.sync-offline { background: rgba(239,68,68,0.2); color: #FCA5A5; }
+.sync-syncing { background: rgba(251,191,36,0.2); color: #FDE68A; }
+
+/* === Period switch === */
+.period-btn {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 7px;
+  color: var(--text-muted);
+  transition: all 0.15s ease;
+}
+.period-btn.active {
+  background: var(--bg-card);
+  color: var(--green-600);
+  box-shadow: var(--shadow-sm);
 }
 
-.badge-pending {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800;
+/* === Section headers === */
+.section-title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
 }
 
-.badge-late {
-  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800;
+/* === Empty states === */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
 }
+.empty-state svg {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 12px;
+  opacity: 0.4;
+}
+.empty-state .empty-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+.empty-state .empty-desc {
+  font-size: 0.8125rem;
+}
+
+/* === Bottom sheet === */
+.sheet-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  background: var(--bg-card);
+  border-radius: 20px 20px 0 0;
+  padding: 12px 16px calc(24px + env(safe-area-inset-bottom, 0));
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  animation: slideUp 0.25s ease;
+}
+.sheet-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border-color);
+  border-radius: 2px;
+  margin: 0 auto 12px;
+}
+
+/* === Toast notification === */
+.toast {
+  position: fixed;
+  bottom: calc(var(--nav-height) + 16px);
+  left: 16px;
+  right: 16px;
+  max-width: 448px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  z-index: 100;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-enter { animation: fadeIn 0.2s ease; }
+
+/* === Dark mode toggle === */
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  transition: background 0.15s;
+  cursor: pointer;
+}
+.theme-toggle:active { background: rgba(255,255,255,0.25); }
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 2px; }
+
+/* === Utils === */
+.text-green { color: var(--green-600); }
+.text-red { color: var(--red-500); }
+.text-yellow { color: var(--yellow-500); }
+.text-muted { color: var(--text-muted); }
+.text-secondary { color: var(--text-secondary); }
+.bg-green-soft { background: var(--green-50); }
+.bg-yellow-soft { background: var(--yellow-50); }
+.bg-red-soft { background: var(--red-50); }
