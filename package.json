@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "vite build && npx wrangler pages deploy",
+    "db:schema": "npx wrangler d1 execute tontine-db --remote --file=./schema.sql"
   },
   "dependencies": {
     "dexie": "^4.4.6",

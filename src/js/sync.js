@@ -30,6 +30,8 @@ export async function syncPush() {
       nom: g.nom,
       montant: g.montant,
       frequence: g.frequence,
+      penalite: g.penalite || 0,
+      commission: g.commission || 0,
       client_id: g.id,
       collecteur_id: g.collecteur_id || null,
     })),

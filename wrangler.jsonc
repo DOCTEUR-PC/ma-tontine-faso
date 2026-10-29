@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ma-tontine-faso",
+  "pages_build_output_dir": "dist",
+  "compatibility_date": "2025-04-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tontine-db",
+      "database_id": "ac558164-f7c3-480e-8d94-6e1ccb2d5b49"
+    }
+  ]
+}
